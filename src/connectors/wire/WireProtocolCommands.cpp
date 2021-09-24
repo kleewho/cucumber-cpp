@@ -13,7 +13,7 @@ BeginScenarioCommand::BeginScenarioCommand(const CukeEngine::tags_type& tags) :
     ScenarioCommand(tags) {
 }
 
-boost::shared_ptr<WireResponse> BeginScenarioCommand::run(CukeEngine& engine) const {
+boost::shared_ptr<WireResponse> BeginScenarioCommand::runCmd(CukeEngine& engine) const {
     engine.beginScenario(tags);
     return boost::make_shared<SuccessResponse>();
 }
@@ -23,7 +23,7 @@ EndScenarioCommand::EndScenarioCommand(const CukeEngine::tags_type& tags) :
     ScenarioCommand(tags) {
 }
 
-boost::shared_ptr<WireResponse> EndScenarioCommand::run(CukeEngine& engine) const {
+boost::shared_ptr<WireResponse> EndScenarioCommand::runCmd(CukeEngine& engine) const {
     engine.endScenario(tags);
     return boost::make_shared<SuccessResponse>();
 }
@@ -33,7 +33,7 @@ StepMatchesCommand::StepMatchesCommand(const std::string & stepName) :
     stepName(stepName) {
 }
 
-boost::shared_ptr<WireResponse> StepMatchesCommand::run(CukeEngine& engine) const {
+boost::shared_ptr<WireResponse> StepMatchesCommand::runCmd(CukeEngine& engine) const {
     std::vector<StepMatch> matchingSteps = engine.stepMatches(stepName);
     return boost::make_shared<StepMatchesResponse>(matchingSteps);
 }
@@ -47,7 +47,7 @@ InvokeCommand::InvokeCommand(const std::string & stepId,
     tableArg(tableArg) {
 }
 
-boost::shared_ptr<WireResponse> InvokeCommand::run(CukeEngine& engine) const {
+boost::shared_ptr<WireResponse> InvokeCommand::runCmd(CukeEngine& engine) const {
     try {
         engine.invokeStep(stepId, args, tableArg);
         return boost::make_shared<SuccessResponse>();
@@ -67,12 +67,12 @@ SnippetTextCommand::SnippetTextCommand(const std::string & keyword, const std::s
     multilineArgClass(multilineArgClass) {
 }
 
-boost::shared_ptr<WireResponse> SnippetTextCommand::run(CukeEngine& engine) const {
+boost::shared_ptr<WireResponse> SnippetTextCommand::runCmd(CukeEngine& engine) const {
     return boost::make_shared<SnippetTextResponse>(engine.snippetText(keyword, name, multilineArgClass));
 }
 
 
-boost::shared_ptr<WireResponse> FailingCommand::run(CukeEngine& /*engine*/) const {
+boost::shared_ptr<WireResponse> FailingCommand::runCmd(CukeEngine& /*engine*/) const {
     return boost::make_shared<FailureResponse>();
 }
 
