@@ -5,6 +5,7 @@
 #include "ProtocolHandler.hpp"
 #include "../../CukeEngine.hpp"
 
+#include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 
 namespace cucumber {
@@ -102,7 +103,15 @@ public:
      *
      * @return The command response (ownership passed to the caller)
      */
-    virtual boost::shared_ptr<WireResponse> run(CukeEngine& engine) const = 0;
+    boost::shared_ptr<WireResponse> run(CukeEngine& engine) const {
+        try {
+            return runCmd(engine);
+        } catch (...) {
+            return boost::make_shared<FailureResponse>();
+        }
+    }
+
+    virtual boost::shared_ptr<WireResponse> runCmd(CukeEngine& engine) const = 0;
 
     virtual ~WireCommand() {};
 };
